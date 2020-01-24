@@ -24,7 +24,6 @@ The MNIST dataset comes preloaded in Keras, in the form of `train` and `test` li
 
 ```{r, results='hide'}
 library(keras)
-
 mnist <- dataset_mnist()
 train_images <- mnist$train$x
 train_labels <- mnist$train$y
@@ -42,6 +41,7 @@ str(train_images)
 
 ```{r}
 str(train_labels)
+barplot(table(train_labels))
 ```
 
 Let's have a look at the test data:
@@ -52,6 +52,7 @@ str(test_images)
 
 ```{r}
 str(test_labels)
+barplot(table(test_labels))
 ```
 
 The workflow will be as follows: first we'll feed the neural network the training data, `train_images` and `train_labels`. The network will then learn to associate images and labels. Finally, we'll ask the network to produce predictions for `test_images`, and we'll verify whether these predictions match the labels from `test_labels`.
@@ -62,6 +63,7 @@ Let's build the network -- again, remember that you aren't supposed to understan
 network <- keras_model_sequential() %>% 
   layer_dense(units = 512, activation = "relu", input_shape = c(28 * 28)) %>% 
   layer_dense(units = 10, activation = "softmax")
+str(network)
 ```
 
 The core building block of neural networks is the _layer_, a data-processing module that you can think of as a filter for data. Some data comes in, and it comes out in a more useful form. Specifically, layers extract _representations_ out of the data fed into them—hopefully representations that are more meaningful for the problem at hand. Most of deep learning consists of chaining together simple layers that will implement a form of progressive _data distillation_. A deep-learning model is like a sieve for data processing, made of a succession of increasingly refined data filters—the layers.
